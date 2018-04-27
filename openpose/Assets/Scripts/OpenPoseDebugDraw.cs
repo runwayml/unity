@@ -7,6 +7,9 @@ using Newtonsoft.Json.Linq;
 
 public class OpenPoseDebugDraw : MonoBehaviour {
 	
+	public float width = 640;
+	public float height = 480;
+	
 	bool running = false;
 	string [,] connections;
 	JObject json = null;
@@ -39,8 +42,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	private void DrawParts(JToken human){
 		foreach(JToken bodypart in human)
 		{
-				float x = (float)bodypart[1] * 100;
-				float y = (float)bodypart[2] * 100;
+				float x = (float)bodypart[1] * width;
+				float y = (float)bodypart[2] * height;
 				
 				Gizmos.color = Color.yellow;
 				Gizmos.DrawSphere(new Vector3(x,-y,0),1);
@@ -66,11 +69,11 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 			}
 			
 			if(start != null && end != null){
-				float sx = (float)start[1] * 100;
-				float sy = (float)start[2] * 100;
+				float sx = (float)start[1] * width;
+				float sy = (float)start[2] * height;
 				Vector3 startPoint = new Vector3(sx,-sy,0);
-				float ex = (float)end[1] * 100;
-				float ey = (float)end[2] * 100;
+				float ex = (float)end[1] * width;
+				float ey = (float)end[2] * height;
 				Vector3 endPoint = new Vector3(ex,-ey,0);
 				Gizmos.color = Color.red;
 				Gizmos.DrawLine(startPoint,endPoint);
