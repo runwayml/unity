@@ -24,8 +24,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		// setting up pairs of body connections
 		SetupConnections();
 		
-		// subscribe to runwayML results
-		OSCRunwayMLBridge.SubscribeResultsHandler(this.UpdateResults);
+		// subscribe to runway results
+		OSCRunwayBridge.SubscribeResultsHandler(this.UpdateResults);
 		
 		//only draw gizmos if application is running
 		running = true; 

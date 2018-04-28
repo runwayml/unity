@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityOSC;
 
-/* Bridge responsible for receiving OSC messages and forwarding them to subscribers */
-public class OSCRunwayMLBridge : MonoBehaviour {
+/* 
+	Bridge responsible for receiving OSC messages from Runway 
+	and forwarding them to subscribers 
+*/
+public class OSCRunwayBridge : MonoBehaviour {
 	
 	public int port = 57200;
 	

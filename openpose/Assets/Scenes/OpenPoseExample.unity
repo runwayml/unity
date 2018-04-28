@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 1809775732}
   - component: {fileID: 1809775731}
   m_Layer: 0
-  m_Name: OSCRunwayMLBridge
+  m_Name: OSCRunwayBridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -256,7 +256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   port: 57200
-  listener: {fileID: 1695196096}
 --- !u!4 &1809775732
 Transform:
   m_ObjectHideFlags: 0
