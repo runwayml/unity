@@ -8,25 +8,36 @@ using Newtonsoft.Json.Linq;
 public class OpenPoseDebugDraw : MonoBehaviour {
 	
 	public float sphereRadiuis = 0.02f;
+	public bool drawTestData = false;
 	
 	bool running = false;
 	string [,] connections;
 	JObject json = null;
+	string receivedResults = "";
+	bool dataReceived = false;
 
-	// Use this for initialization
 	void Start () {
 		SetupConnections();
-		json = LoadTestJson();
 		running = true;
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		
+		if(drawTestData)
+		{
+			json = LoadTestJson();		
+		}else if(dataReceived)
+		{
+			json = JObject.Parse(receivedResults);
+		}
+	}
+	
+	public void sendResults(string results){
+		receivedResults = results;
+		dataReceived = true;
 	}
 	
 	void OnDrawGizmos(){
-		if(!running)
+		if(!running || json == null)
 			return;
 			
 		// Debug.Log(json["results"]["humans"]);
@@ -107,7 +118,6 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	private JObject LoadTestJson(){
 		JObject json = JObject.Parse(@"{'results':{'humans':[[['Nose',0.42592592592592593,0.13043478260869565],['Neck',0.42592592592592593,0.34782608695652173],['Right_Shoulder',0.2962962962962963,0.34782608695652173],['Right_Elbow',0.16666666666666666,0.5434782608695652],['Left_Shoulder',0.5740740740740741,0.34782608695652173],['Left_Elbow',0.6666666666666666,0.6086956521739131],['Left_Ear',0.5,0.13043478260869565],['Left_Eye',0.4629629629629629,0.08695652173913043],['Right_Eye',0.38888888888888884,0.08695652173913043],['Right_Ear',0.37037037037037035,0.13043478260869565]]]}}");
 		
-		// Debug.Log(json.ToString());
 		return json;
 	}
 }
