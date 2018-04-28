@@ -6,9 +6,15 @@ using UnityOSC;
 public class OSCRunwayMLBridge : MonoBehaviour {
 	
 	public int port = 57200;
-	public OpenPoseDebugDraw listener;
 	
 	private OSCReciever reciever;
+	
+	public delegate void UpdateResultsDelegate(string results);
+	private static UpdateResultsDelegate updateResults = null;
+	
+	public static void SubscribeResultsHandler(UpdateResultsDelegate handler){
+		updateResults += handler;
+	}
 
 	void Start () {
 		reciever = new OSCReciever();
@@ -26,9 +32,9 @@ public class OSCRunwayMLBridge : MonoBehaviour {
 			Debug.Log(DataToString(newMessage.Data));
 		}
 		
-		if(found && listener)
+		if(found && updateResults!=null)
 		{
-			listener.sendResults(newMessage.Data[0].ToString());
+			updateResults(newMessage.Data[0].ToString());
 		}
 	}
 	

@@ -18,7 +18,9 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 
 	void Start () {
 		SetupConnections();
-		running = true;
+		running = true; 
+		
+		OSCRunwayMLBridge.SubscribeResultsHandler(this.UpdateResults);
 	}
 	
 	void Update () {
@@ -31,7 +33,7 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		}
 	}
 	
-	public void sendResults(string results){
+	public void UpdateResults(string results){
 		receivedResults = results;
 		dataReceived = true;
 	}
@@ -40,8 +42,7 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		if(!running || json == null)
 			return;
 			
-		// Debug.Log(json["results"]["humans"]);
-		JArray humans = (JArray)json["results"]["humans"]; // TODO check for existence 
+		JArray humans = (JArray)json["results"]["humans"]; 
 		foreach(JToken human in humans)
 		{
 			DrawParts(human);
