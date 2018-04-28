@@ -7,8 +7,7 @@ using Newtonsoft.Json.Linq;
 
 public class OpenPoseDebugDraw : MonoBehaviour {
 	
-	public float width = 640;
-	public float height = 480;
+	public float sphereRadiuis = 0.02f;
 	
 	bool running = false;
 	string [,] connections;
@@ -42,11 +41,12 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	private void DrawParts(JToken human){
 		foreach(JToken bodypart in human)
 		{
-				float x = (float)bodypart[1] * width;
-				float y = (float)bodypart[2] * height;
+				float x = (float)bodypart[1];
+				float y = (float)bodypart[2];
 				
 				Gizmos.color = Color.yellow;
-				Gizmos.DrawSphere(new Vector3(x,-y,0),1);
+				Gizmos.matrix = transform.localToWorldMatrix;
+				Gizmos.DrawSphere(new Vector3(x,-y,0),sphereRadiuis);
 		}
 	}
 	
@@ -69,13 +69,14 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 			}
 			
 			if(start != null && end != null){
-				float sx = (float)start[1] * width;
-				float sy = (float)start[2] * height;
+				float sx = (float)start[1];
+				float sy = (float)start[2];
 				Vector3 startPoint = new Vector3(sx,-sy,0);
-				float ex = (float)end[1] * width;
-				float ey = (float)end[2] * height;
+				float ex = (float)end[1];
+				float ey = (float)end[2];
 				Vector3 endPoint = new Vector3(ex,-ey,0);
 				Gizmos.color = Color.red;
+				Gizmos.matrix = transform.localToWorldMatrix;
 				Gizmos.DrawLine(startPoint,endPoint);
 			}
 		}
@@ -101,10 +102,6 @@ public class OpenPoseDebugDraw : MonoBehaviour {
         {"Left_Hip", "Left_Knee"},
         {"Left_Knee", "Left_Ankle"}
     };
-		
-		for(int c = 0;c<connections.GetLength(0);c++){
-			Debug.Log(connections[c,0]);
-		}
 	}
 	
 	private JObject LoadTestJson(){
