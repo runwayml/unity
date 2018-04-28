@@ -5,25 +5,34 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+/* 
+	OpenPoseDebugDraw is taking care of parsing the Json results 
+	and drawing connections and parts for every human
+ */
 public class OpenPoseDebugDraw : MonoBehaviour {
 	
-	public float sphereRadiuis = 0.02f;
+	public float sphereRadiuis = 0.02f; //parts are drawn as spheres
 	public bool drawTestData = false;
 	
-	bool running = false;
-	string [,] connections;
-	JObject json = null;
-	string receivedResults = "";
-	bool dataReceived = false;
+	private string [,] connections;
+	private bool running = false;
+	private bool dataReceived = false;
+	private string receivedResults = "";
+	private JObject json = null;
 
 	void Start () {
+		// setting up pairs of body connections
 		SetupConnections();
-		running = true; 
 		
+		// subscribe to runwayML results
 		OSCRunwayMLBridge.SubscribeResultsHandler(this.UpdateResults);
+		
+		//only draw gizmos if application is running
+		running = true; 
 	}
 	
 	void Update () {
+		// parse test data or incoming life results
 		if(drawTestData)
 		{
 			json = LoadTestJson();		
@@ -33,6 +42,7 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		}
 	}
 	
+	// handler for receiving results
 	public void UpdateResults(string results){
 		receivedResults = results;
 		dataReceived = true;
