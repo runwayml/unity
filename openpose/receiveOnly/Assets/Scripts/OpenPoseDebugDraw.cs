@@ -48,9 +48,10 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	public float sphereRadiuis = 20f; 
 	public Color partColor = Color.red;
 	public Color lineColor = Color.black;
-	[Header("Plane Size")]
-	public float width = 1280;
+	[Header("Mapping")]
+	public float width = 845f;
 	public float height = 720f;
+	public float offset = 217.5f;
 	[Header("Test Data Set")]
 	public bool enableTestDataSet = false;
 	
@@ -70,6 +71,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		OSCRunwayBridge.SubscribeResultsHandler(this.UpdateResults);
 		
 		// setup texture for webcam
+		// webcamTexture = new WebCamTexture(WebCamTexture.devices[0].name,432,368,30); 
+		// not working on internal mac cam
 		webcamTexture = new WebCamTexture();
 	}
 	
@@ -86,8 +89,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		// control webcam via inspector
 		if(useWebCamFeed)
 		{
-			height = webcamTexture.height;
-			width = webcamTexture.width;
+			// height = webcamTexture.height;
+			// width = webcamTexture.width;
 			
 			if(!webcamTexture.isPlaying)
 			{
@@ -131,7 +134,7 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		
 		foreach(JToken bodypart in human)
 		{
-				float x = (float)bodypart[1] * width;
+				float x = (float)bodypart[1] * width + offset;
 				float y = (float)bodypart[2] * height;
 				Gizmos.DrawSphere(new Vector3(x,-y,0),sphereRadiuis);
 		}
@@ -160,10 +163,10 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 			
 			if(start != null && end != null)
 			{
-				float sx = (float)start[1] * width;
+				float sx = (float)start[1] * width + offset;
 				float sy = (float)start[2] * height;
 				Vector3 startPoint = new Vector3(sx,-sy,0);
-				float ex = (float)end[1] * width;
+				float ex = (float)end[1] * width + offset;
 				float ey = (float)end[2] * height;
 				Vector3 endPoint = new Vector3(ex,-ey,0);
 				Gizmos.DrawLine(startPoint,endPoint);
