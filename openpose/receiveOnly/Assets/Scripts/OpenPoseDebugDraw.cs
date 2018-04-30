@@ -41,14 +41,21 @@ using Newtonsoft.Json.Linq;
  */
 public class OpenPoseDebugDraw : MonoBehaviour {
 	
-	public float sphereRadiuis = 0.02f; //parts are drawn as spheres
-	public bool drawTestData = false;
+	// Settings available in the inspector
+	public float sphereRadiuis = 2f; //parts are drawn as spheres
+	public float width = 1280;
+	public float height = 720f;
+	public bool useWebCamFeed = true;
+	public bool enableTestDataSet = false;
 	
+	// private members
 	private string [,] connections;
 	private bool running = false;
 	private bool dataReceived = false;
 	private string receivedResults = "";
 	private JObject json = null;
+	
+	private WebCamTexture webcamTexture = null;
 
 	void Start () {
 		// setting up pairs of body connections
@@ -57,18 +64,39 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		// subscribe to runway results
 		OSCRunwayBridge.SubscribeResultsHandler(this.UpdateResults);
 		
-		//only draw gizmos if application is running
+		// only draw gizmos if application is running
 		running = true; 
+		
+		// setup texture for webcam
+		webcamTexture = new WebCamTexture();
 	}
 	
 	void Update () {
 		// parse test data or incoming life results
-		if(drawTestData)
+		if(enableTestDataSet)
 		{
 			json = LoadTestJson();		
 		}else if(dataReceived)
 		{
 			json = JObject.Parse(receivedResults);
+		}
+		
+		// control webcam via inspector
+		if(useWebCamFeed)
+		{
+			height = webcamTexture.height;
+			width = webcamTexture.width;
+			
+			if(!webcamTexture.isPlaying)
+			{
+				webcamTexture.Play();
+			}
+		}else
+		{
+			if(webcamTexture.isPlaying)
+			{
+				webcamTexture.Stop();
+			}
 		}
 	}
 	
@@ -79,8 +107,13 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	}
 	
 	void OnDrawGizmos(){
-		if(!running || json == null)
+		if(!running) //draw only during play mode
 			return;
+			
+		DrawWebCam();
+			
+		if(json == null)
+			return;	
 			
 		JArray humans = (JArray)json["results"]["humans"]; 
 		foreach(JToken human in humans)
@@ -93,8 +126,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	private void DrawParts(JToken human){
 		foreach(JToken bodypart in human)
 		{
-				float x = (float)bodypart[1];
-				float y = (float)bodypart[2];
+				float x = (float)bodypart[1] * width;
+				float y = (float)bodypart[2] * height;
 				
 				Gizmos.color = Color.yellow;
 				Gizmos.matrix = transform.localToWorldMatrix;
@@ -120,17 +153,25 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 				}
 			}
 			
-			if(start != null && end != null){
-				float sx = (float)start[1];
-				float sy = (float)start[2];
+			if(start != null && end != null)
+			{
+				float sx = (float)start[1] * width;
+				float sy = (float)start[2] * height;
 				Vector3 startPoint = new Vector3(sx,-sy,0);
-				float ex = (float)end[1];
-				float ey = (float)end[2];
+				float ex = (float)end[1] * width;
+				float ey = (float)end[2] * height;
 				Vector3 endPoint = new Vector3(ex,-ey,0);
 				Gizmos.color = Color.red;
 				Gizmos.matrix = transform.localToWorldMatrix;
 				Gizmos.DrawLine(startPoint,endPoint);
 			}
+		}
+	}
+	
+	private void DrawWebCam(){
+		if(useWebCamFeed)
+		{
+			Gizmos.DrawGUITexture(new Rect(0,0,webcamTexture.width,-webcamTexture.height),webcamTexture);
 		}
 	}
 	
