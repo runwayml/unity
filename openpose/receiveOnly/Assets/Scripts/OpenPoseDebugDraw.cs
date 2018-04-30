@@ -37,20 +37,25 @@ using Newtonsoft.Json.Linq;
 
 /* 
 	OpenPoseDebugDraw is taking care of parsing the Json results 
-	and drawing connections and parts for every human
+	and drawing connections and parts for every human as gizmos
  */
 public class OpenPoseDebugDraw : MonoBehaviour {
 	
 	// Settings available in the inspector
-	public float sphereRadiuis = 2f; //parts are drawn as spheres
+	[Header("WebCam Settings")]
+	public bool useWebCamFeed = true;
+	[Header("Styling")]
+	public float sphereRadiuis = 20f; 
+	public Color partColor = Color.red;
+	public Color lineColor = Color.black;
+	[Header("Plane Size")]
 	public float width = 1280;
 	public float height = 720f;
-	public bool useWebCamFeed = true;
+	[Header("Test Data Set")]
 	public bool enableTestDataSet = false;
 	
 	// private members
 	private string [,] connections;
-	private bool running = false;
 	private bool dataReceived = false;
 	private string receivedResults = "";
 	private JObject json = null;
@@ -63,9 +68,6 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		
 		// subscribe to runway results
 		OSCRunwayBridge.SubscribeResultsHandler(this.UpdateResults);
-		
-		// only draw gizmos if application is running
-		running = true; 
 		
 		// setup texture for webcam
 		webcamTexture = new WebCamTexture();
@@ -107,7 +109,7 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	}
 	
 	void OnDrawGizmos(){
-		if(!running) //draw only during play mode
+		if(!Application.isPlaying)
 			return;
 			
 		DrawWebCam();
@@ -124,18 +126,21 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	}
 	
 	private void DrawParts(JToken human){
+		Gizmos.color = partColor;
+		Gizmos.matrix = transform.localToWorldMatrix;
+		
 		foreach(JToken bodypart in human)
 		{
 				float x = (float)bodypart[1] * width;
 				float y = (float)bodypart[2] * height;
-				
-				Gizmos.color = Color.yellow;
-				Gizmos.matrix = transform.localToWorldMatrix;
 				Gizmos.DrawSphere(new Vector3(x,-y,0),sphereRadiuis);
 		}
 	}
 	
 	private void DrawConnections(JToken human){
+		Gizmos.color = lineColor;
+		Gizmos.matrix = transform.localToWorldMatrix;
+		
 		for(int c = 0;c<connections.GetLength(0);c++)
 		{
 			JToken start = null, end = null;
@@ -161,8 +166,6 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 				float ex = (float)end[1] * width;
 				float ey = (float)end[2] * height;
 				Vector3 endPoint = new Vector3(ex,-ey,0);
-				Gizmos.color = Color.red;
-				Gizmos.matrix = transform.localToWorldMatrix;
 				Gizmos.DrawLine(startPoint,endPoint);
 			}
 		}
