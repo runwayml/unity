@@ -213,11 +213,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771e8bb8057e54ff88a34767674f5352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereRadiuis: 10
+  useWebCamFeed: 0
+  sphereRadiuis: 20
+  partColor: {r: 1, g: 0, b: 0, a: 1}
+  lineColor: {r: 0, g: 0, b: 0, a: 1}
   width: 1280
   height: 720
-  useWebCamFeed: 0
-  enableTestDataSet: 1
+  enableTestDataSet: 0
 --- !u!4 &1695196097
 Transform:
   m_ObjectHideFlags: 0
