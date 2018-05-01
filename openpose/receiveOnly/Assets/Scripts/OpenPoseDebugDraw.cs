@@ -44,14 +44,19 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	// Settings available in the inspector
 	[Header("WebCam Settings")]
 	public bool useWebCamFeed = true;
+	private WebCamTexture webcamTexture = null;
 	[Header("Styling")]
 	public float sphereRadiuis = 20f; 
 	public Color partColor = Color.red;
 	public Color lineColor = Color.black;
 	[Header("Mapping")]
-	public float width = 845f;
-	public float height = 720f;
-	public float offset = 217.5f;
+	public float targetWidth = 1280;
+	public float targetHeight = 720;
+	private float modelWidth = 432;
+	private float modelHeight = 368;
+	private float mappingWidth;
+	private float mappingHeight;
+	private float mappingOffset;
 	[Header("Test Data Set")]
 	public bool enableTestDataSet = false;
 	
@@ -61,7 +66,6 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	private string receivedResults = "";
 	private JObject json = null;
 	
-	private WebCamTexture webcamTexture = null;
 
 	void Start () {
 		// setting up pairs of body connections
@@ -89,8 +93,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		// control webcam via inspector
 		if(useWebCamFeed)
 		{
-			// height = webcamTexture.height;
-			// width = webcamTexture.width;
+			targetWidth = webcamTexture.width;
+			targetHeight = webcamTexture.height;
 			
 			if(!webcamTexture.isPlaying)
 			{
@@ -102,6 +106,25 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 			{
 				webcamTexture.Stop();
 			}
+		}
+		
+		// update variables used for source to target mapping
+		UpdateMappingData();
+	}
+	
+	private void UpdateMappingData(){
+		if(useWebCamFeed)
+		{
+			// runway seems to cut off the camera image to fit the model resolution
+			mappingHeight = targetHeight;
+			mappingWidth = (targetHeight/modelHeight) * modelWidth;
+			mappingOffset = (targetWidth - mappingWidth) / 2f;
+		}else 
+		{ 
+			// simple scaling if no webcam feed
+			mappingHeight = targetHeight;
+			mappingWidth = targetWidth;
+			mappingOffset = 0;
 		}
 	}
 	
@@ -134,9 +157,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		
 		foreach(JToken bodypart in human)
 		{
-				float x = (float)bodypart[1] * width + offset;
-				float y = (float)bodypart[2] * height;
-				Gizmos.DrawSphere(new Vector3(x,-y,0),sphereRadiuis);
+				Vector3 pos = GetMappedPosition((float)bodypart[1], (float)bodypart[2]);
+				Gizmos.DrawSphere(pos,sphereRadiuis);
 		}
 	}
 	
@@ -163,15 +185,17 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 			
 			if(start != null && end != null)
 			{
-				float sx = (float)start[1] * width + offset;
-				float sy = (float)start[2] * height;
-				Vector3 startPoint = new Vector3(sx,-sy,0);
-				float ex = (float)end[1] * width + offset;
-				float ey = (float)end[2] * height;
-				Vector3 endPoint = new Vector3(ex,-ey,0);
+				Vector3 startPoint = GetMappedPosition((float)start[1], (float)start[2]);
+				Vector3 endPoint = GetMappedPosition((float)end[1], (float)end[2]);
 				Gizmos.DrawLine(startPoint,endPoint);
 			}
 		}
+	}
+	
+	private Vector3 GetMappedPosition(float x, float y){
+		float mappedX = x * mappingWidth + mappingOffset;
+		float mappedY = y * mappingHeight;
+		return new Vector3(mappedX,-mappedY,0);
 	}
 	
 	private void DrawWebCam(){
