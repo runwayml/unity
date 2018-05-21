@@ -71,12 +71,7 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		// setting up pairs of body connections
 		SetupConnections();
 		
-		// subscribe to runway results
-		OSCRunwayBridge.SubscribeResultsHandler(this.UpdateResults);
-		
 		// setup texture for webcam
-		// webcamTexture = new WebCamTexture(WebCamTexture.devices[0].name,432,368,30); 
-		// not working on internal mac cam
 		webcamTexture = new WebCamTexture();
 	}
 	
