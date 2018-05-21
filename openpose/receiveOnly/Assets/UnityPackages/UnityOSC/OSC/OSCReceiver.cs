@@ -5,7 +5,7 @@ using UnityOSC;
 using UnityEditor;
 #endif
 
-public class OSCReciever
+public class OSCReceiver
 {
     Queue<OSCMessage> _queue = new Queue<OSCMessage>();
     OSCServer _server;
