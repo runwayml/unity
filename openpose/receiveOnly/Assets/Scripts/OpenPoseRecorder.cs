@@ -36,7 +36,7 @@ public class OpenPoseRecorder : StringRecorder
     // handler for receiving results
     public void UpdateResults(string results)
     {
-        if (isRecording)
+        if (IsRecording && !IsPaused)
         {
             RecordData(results);
         }

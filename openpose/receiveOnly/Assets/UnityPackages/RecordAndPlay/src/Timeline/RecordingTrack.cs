@@ -11,6 +11,25 @@ namespace RecordAndPlay
     {
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
         {
+            foreach (var clip in GetClips())
+            {
+                RecordingClip recordingClip = clip.asset as RecordingClip;
+                Recording recordingRef = recordingClip.template.recording;
+                if (recordingRef)
+                {
+                    if (recordingClip.template.RecordingChanged())
+                    {
+                        clip.displayName = "Recording: " + recordingRef.name;
+                        clip.duration = recordingClip.duration;
+                        clip.clipIn = 0;
+                    }
+                }
+                else
+                {
+                    clip.displayName = "...";
+                }
+            }
+
             return ScriptPlayable<RecordingMixerBehaviour>.Create(graph, inputCount);
         }
     }

@@ -31,6 +31,12 @@ namespace RecordAndPlay
                 if (inputWeight > 0 && input.recording != null)
                 {
                     float timeS = (float)inputPlayable.GetTime();
+                    float duration = input.recording.duration;
+                    if (duration > 0)
+                    {
+                        timeS = timeS % duration; //loop
+                    }
+                    
                     DataFrame dataFrame = input.recording.GetFrameData(timeS);
                     if (dataFrame != null)
                     {
