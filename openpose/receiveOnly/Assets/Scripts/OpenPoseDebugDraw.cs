@@ -63,6 +63,8 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	
 
 	void Start () {
+		mapping = new OpenPoseMapping();
+		
 		// setup texture for webcam
 		webcamTexture = new WebCamTexture();
 	}

@@ -31,20 +31,42 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using RecordAndPlay;
 
-// Bridge between Timeline Track and OpenPoseDebugDraw (via UnityEvents)
 public class OpenPoseListener : DataListener
 {
-    [System.Serializable]
-    public class StringEvent : UnityEvent<string> { };
-    [SerializeField]
-    public StringEvent updateEvent;
+    public OpenPoseMapping mapping = new OpenPoseMapping();
+    [Header("Styling")]
+	public float sphereRadiuis = 20f; 
+	public Color partColor = Color.red;
+	public Color lineColor = Color.black;
+    
+    private JObject json = null;
 
     //forward frames via unity events
     public override void ProcessData(DataFrame data)
     {
         StringData stringData = data as StringData;
-        updateEvent.Invoke(stringData.data);
+        json = JObject.Parse(stringData.data);
     }
+    
+    void OnDrawGizmos(){
+			
+		if(json == null)
+			return;	
+			
+		JArray humans = (JArray)json["results"]["humans"]; 
+        Gizmos.matrix = transform.localToWorldMatrix;
+		foreach(JToken human in humans)
+		{
+			Gizmos.color = partColor;
+			OpenPoseGizmos.DrawParts(human,mapping,sphereRadiuis);
+			
+			Gizmos.color = lineColor;
+			OpenPoseGizmos.DrawConnections(human,mapping);
+		}
+	}
 }
