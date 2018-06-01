@@ -36,7 +36,7 @@ using Newtonsoft.Json.Linq;
 
 using RecordAndPlay;
 
-public class OpenPoseListener : DataListener
+public class OpenPosePlotter : DataListener
 {
     public OpenPoseMapping mapping = new OpenPoseMapping();
     [Header("Styling")]
