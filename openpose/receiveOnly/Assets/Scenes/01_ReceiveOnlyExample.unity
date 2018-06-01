@@ -154,10 +154,10 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 500
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -180,7 +180,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 644, y: -343, z: -877}
+  m_LocalPosition: {x: 562.3131, y: -267.36526, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -213,12 +213,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771e8bb8057e54ff88a34767674f5352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useWebCamFeed: 1
+  useWebCamFeed: 0
   sphereRadiuis: 20
-  partColor: {r: 1, g: 0, b: 0, a: 0.8}
+  partColor: {r: 1, g: 0, b: 0, a: 1}
   lineColor: {r: 0, g: 0, b: 0, a: 1}
-  width: 1280
-  height: 720
+  targetWidth: 1280
+  targetHeight: 720
   enableTestDataSet: 0
 --- !u!4 &1695196097
 Transform:
@@ -261,6 +261,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   port: 57200
+  updateEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1695196096}
+        m_MethodName: UpdateResults
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: OSCRunwayBridge+StringEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!4 &1809775732
 Transform:
   m_ObjectHideFlags: 0
