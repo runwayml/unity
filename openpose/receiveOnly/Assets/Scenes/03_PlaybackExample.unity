@@ -146,9 +146,11 @@ MonoBehaviour:
     width: 1280
     height: 720
     offset: 0
-  sphereRadiuis: 20
+  sphereRadiuis: 7
   partColor: {r: 1, g: 0, b: 0, a: 1}
   lineColor: {r: 0, g: 0, b: 0, a: 1}
+  recording: {fileID: 11400000, guid: 1825e7e88e0214a8ea7f76f856dd5070, type: 2}
+  plotFullRecording: 0
 --- !u!4 &322726548
 Transform:
   m_ObjectHideFlags: 0
@@ -312,9 +314,11 @@ MonoBehaviour:
     width: 1280
     height: 720
     offset: 0
-  sphereRadiuis: 20
+  sphereRadiuis: 7
   partColor: {r: 0.06170094, g: 1, b: 0, a: 1}
   lineColor: {r: 0.23231876, g: 0.3584906, b: 0.2012282, a: 1}
+  recording: {fileID: 11400000, guid: e93d6f58c3a2c47fa92900329620e18a, type: 2}
+  plotFullRecording: 0
 --- !u!95 &593881762
 Animator:
   serializedVersion: 3
@@ -366,7 +370,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 593881760}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -400, y: 0, z: 0}
+  m_LocalPosition: {x: -450, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

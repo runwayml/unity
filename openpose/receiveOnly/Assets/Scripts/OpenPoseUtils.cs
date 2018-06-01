@@ -68,7 +68,7 @@ public static class OpenPoseGizmos
         foreach (JToken bodypart in human)
         {
             Vector3 pos = GetMappedPosition((float)bodypart[1], (float)bodypart[2], mapping);
-            Gizmos.DrawSphere(pos, radius);
+            Gizmos.DrawWireSphere(pos, radius);
         }
     }
 

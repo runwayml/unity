@@ -40,10 +40,14 @@ public class OpenPosePlotter : DataListener
 {
     public OpenPoseMapping mapping = new OpenPoseMapping();
     [Header("Styling")]
-	public float sphereRadiuis = 20f; 
-	public Color partColor = Color.red;
-	public Color lineColor = Color.black;
-    
+    public float sphereRadiuis = 20f;
+    public Color partColor = Color.red;
+    public Color lineColor = Color.black;
+
+    [Header("Plotter")]
+    public Recording recording = null;
+    public bool plotFullRecording = true;
+
     private JObject json = null;
 
     //forward frames via unity events
@@ -52,21 +56,42 @@ public class OpenPosePlotter : DataListener
         StringData stringData = data as StringData;
         json = JObject.Parse(stringData.data);
     }
-    
-    void OnDrawGizmos(){
-			
-		if(json == null)
-			return;	
-			
-		JArray humans = (JArray)json["results"]["humans"]; 
+
+    void OnDrawGizmos()
+    {
+        if (plotFullRecording && recording != null)
+        {
+			var frames = recording.DataFrames;
+            for (int i=0;i<frames.Count;++i)
+            {
+				StringData stringData = frames[i] as StringData;
+				JToken json = JObject.Parse(stringData.data);
+				float alpha = (float)i / (float)frames.Count;
+				alpha /= 2f;
+				DrawHuman(json,alpha);
+            }
+        }
+        else if (json != null)
+        {
+            DrawHuman(json);
+        }
+    }
+
+    private void DrawHuman(JToken json, float alpha = 1)
+    {
+        JArray humans = (JArray)json["results"]["humans"];
         Gizmos.matrix = transform.localToWorldMatrix;
-		foreach(JToken human in humans)
-		{
-			Gizmos.color = partColor;
-			OpenPoseGizmos.DrawParts(human,mapping,sphereRadiuis);
-			
-			Gizmos.color = lineColor;
-			OpenPoseGizmos.DrawConnections(human,mapping);
-		}
-	}
+        foreach (JToken human in humans)
+        {
+			Color color = partColor;
+			color.a = alpha;
+			Gizmos.color = color;
+            OpenPoseGizmos.DrawParts(human, mapping, sphereRadiuis);
+
+			color = lineColor;
+			color.a = alpha;
+			Gizmos.color = color;
+            OpenPoseGizmos.DrawConnections(human, mapping);
+        }
+    }
 }
