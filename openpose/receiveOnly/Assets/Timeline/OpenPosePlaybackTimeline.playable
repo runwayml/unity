@@ -14,6 +14,7 @@ MonoBehaviour:
   m_NextId: 0
   m_Tracks:
   - {fileID: 114296223556569542}
+  - {fileID: 114729899282935154}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
@@ -40,7 +41,7 @@ MonoBehaviour:
   - m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 114727266194474412}
-    m_Duration: 28.02587890625
+    m_Duration: 70.064697265625
     m_TimeScale: 1
     m_ParentTrack: {fileID: 114296223556569542}
     m_EaseInDuration: 0
@@ -106,12 +107,78 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: 'Recording: Wave'
     m_Version: 1
-  - m_Start: 28.02587890625
-    m_ClipIn: 0
+  m_Version: 1
+--- !u!114 &114344847968410930
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cd434a3e3184adf9bb31348ce468b5, type: 3}
+  m_Name: Recording Track (1)
+  m_EditorClassIdentifier: 
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_AnimClip: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips: []
+  m_Version: 1
+--- !u!114 &114585549699825360
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef456091969024375aef2552952b31d9, type: 3}
+  m_Name: RecordingClip
+  m_EditorClassIdentifier: 
+  template:
+    recording: {fileID: 11400000, guid: e93d6f58c3a2c47fa92900329620e18a, type: 2}
+    watchReference: {fileID: 11400000, guid: e93d6f58c3a2c47fa92900329620e18a, type: 2}
+--- !u!114 &114727266194474412
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef456091969024375aef2552952b31d9, type: 3}
+  m_Name: RecordingClip
+  m_EditorClassIdentifier: 
+  template:
+    recording: {fileID: 11400000, guid: 1825e7e88e0214a8ea7f76f856dd5070, type: 2}
+    watchReference: {fileID: 11400000, guid: 1825e7e88e0214a8ea7f76f856dd5070, type: 2}
+--- !u!114 &114729899282935154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cd434a3e3184adf9bb31348ce468b5, type: 3}
+  m_Name: Recording Track (1)
+  m_EditorClassIdentifier: 
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_AnimClip: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Start: 0
+    m_ClipIn: 1.5666666666666669
     m_Asset: {fileID: 114585549699825360}
-    m_Duration: 33.244842529296875
+    m_Duration: 64.92301839192712
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 114296223556569542}
+    m_ParentTrack: {fileID: 114729899282935154}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: 0
@@ -176,50 +243,3 @@ MonoBehaviour:
     m_DisplayName: 'Recording: Dev Mode'
     m_Version: 1
   m_Version: 1
---- !u!114 &114344847968410930
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39cd434a3e3184adf9bb31348ce468b5, type: 3}
-  m_Name: Recording Track (1)
-  m_EditorClassIdentifier: 
-  m_Locked: 0
-  m_Muted: 0
-  m_CustomPlayableFullTypename: 
-  m_AnimClip: {fileID: 0}
-  m_Parent: {fileID: 11400000}
-  m_Children: []
-  m_Clips: []
-  m_Version: 1
---- !u!114 &114585549699825360
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef456091969024375aef2552952b31d9, type: 3}
-  m_Name: RecordingClip
-  m_EditorClassIdentifier: 
-  template:
-    recording: {fileID: 11400000, guid: e93d6f58c3a2c47fa92900329620e18a, type: 2}
-    watchReference: {fileID: 11400000, guid: e93d6f58c3a2c47fa92900329620e18a, type: 2}
---- !u!114 &114727266194474412
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef456091969024375aef2552952b31d9, type: 3}
-  m_Name: RecordingClip
-  m_EditorClassIdentifier: 
-  template:
-    recording: {fileID: 11400000, guid: 1825e7e88e0214a8ea7f76f856dd5070, type: 2}
-    watchReference: {fileID: 11400000, guid: 1825e7e88e0214a8ea7f76f856dd5070, type: 2}
