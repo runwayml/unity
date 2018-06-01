@@ -150,7 +150,7 @@ MonoBehaviour:
   partColor: {r: 1, g: 0, b: 0, a: 1}
   lineColor: {r: 0, g: 0, b: 0, a: 1}
   recording: {fileID: 11400000, guid: 1825e7e88e0214a8ea7f76f856dd5070, type: 2}
-  plotFullRecording: 0
+  plotFullRecording: 1
 --- !u!4 &322726548
 Transform:
   m_ObjectHideFlags: 0
