@@ -54,33 +54,24 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 	public float targetHeight = 720;
 	private float modelWidth = 432;
 	private float modelHeight = 368;
-	private float mappingWidth;
-	private float mappingHeight;
-	private float mappingOffset;
-	[Header("Test Data Set")]
-	public bool enableTestDataSet = false;
+	private OpenPoseMapping mapping;
 	
 	// private members
-	private string [,] connections;
 	private bool dataReceived = false;
 	private string receivedResults = "";
 	private JObject json = null;
 	
 
 	void Start () {
-		// setting up pairs of body connections
-		SetupConnections();
+		mapping = new OpenPoseMapping();
 		
 		// setup texture for webcam
 		webcamTexture = new WebCamTexture();
 	}
 	
 	void Update () {
-		// parse test data or incoming life results
-		if(enableTestDataSet)
-		{
-			json = LoadTestJson();		
-		}else if(dataReceived)
+		// parse incoming results
+		if(dataReceived)
 		{
 			json = JObject.Parse(receivedResults);
 		}
@@ -111,15 +102,15 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		if(useWebCamFeed)
 		{
 			// runway seems to cut off the camera image to fit the model resolution
-			mappingHeight = targetHeight;
-			mappingWidth = (targetHeight/modelHeight) * modelWidth;
-			mappingOffset = (targetWidth - mappingWidth) / 2f;
+			mapping.height = targetHeight;
+			mapping.width = (targetHeight/modelHeight) * modelWidth;
+			mapping.offset = (targetWidth - mapping.width) / 2f;
 		}else 
 		{ 
 			// simple scaling if no webcam feed
-			mappingHeight = targetHeight;
-			mappingWidth = targetWidth;
-			mappingOffset = 0;
+			mapping.height = targetHeight;
+			mapping.width = targetWidth;
+			mapping.offset = 0;
 		}
 	}
 	
@@ -139,58 +130,15 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 			return;	
 			
 		JArray humans = (JArray)json["results"]["humans"]; 
+        Gizmos.matrix = transform.localToWorldMatrix;
 		foreach(JToken human in humans)
 		{
-			DrawParts(human);
-			DrawConnections(human);
-		}
-	}
-	
-	private void DrawParts(JToken human){
-		Gizmos.color = partColor;
-		Gizmos.matrix = transform.localToWorldMatrix;
-		
-		foreach(JToken bodypart in human)
-		{
-				Vector3 pos = GetMappedPosition((float)bodypart[1], (float)bodypart[2]);
-				Gizmos.DrawSphere(pos,sphereRadiuis);
-		}
-	}
-	
-	private void DrawConnections(JToken human){
-		Gizmos.color = lineColor;
-		Gizmos.matrix = transform.localToWorldMatrix;
-		
-		for(int c = 0;c<connections.GetLength(0);c++)
-		{
-			JToken start = null, end = null;
-			foreach(JToken bodypart in human)
-			{
-				string name = (string)bodypart[0];
-				
-				if(name == connections[c,0])
-				{
-					start = bodypart;
-				}
-				else if(name == connections[c,1])
-				{
-					end = bodypart;
-				}
-			}
+			Gizmos.color = partColor;
+			OpenPoseGizmos.DrawParts(human,mapping,sphereRadiuis);
 			
-			if(start != null && end != null)
-			{
-				Vector3 startPoint = GetMappedPosition((float)start[1], (float)start[2]);
-				Vector3 endPoint = GetMappedPosition((float)end[1], (float)end[2]);
-				Gizmos.DrawLine(startPoint,endPoint);
-			}
+			Gizmos.color = lineColor;
+			OpenPoseGizmos.DrawConnections(human,mapping);
 		}
-	}
-	
-	private Vector3 GetMappedPosition(float x, float y){
-		float mappedX = x * mappingWidth + mappingOffset;
-		float mappedY = y * mappingHeight;
-		return new Vector3(mappedX,-mappedY,0);
 	}
 	
 	private void DrawWebCam(){
@@ -198,33 +146,5 @@ public class OpenPoseDebugDraw : MonoBehaviour {
 		{
 			Gizmos.DrawGUITexture(new Rect(0,0,webcamTexture.width,-webcamTexture.height),webcamTexture);
 		}
-	}
-	
-	private void SetupConnections(){
-		connections = new string[,] {
-        {"Nose", "Left_Eye"},
-        {"Left_Eye", "Left_Ear"},
-        {"Nose", "Right_Eye"},
-        {"Right_Eye", "Right_Ear"},
-        {"Nose", "Neck"},
-        {"Neck", "Right_Shoulder"},
-        {"Neck", "Left_Shoulder"},
-        {"Right_Shoulder", "Right_Elbow"},
-        {"Right_Elbow", "Right_Wrist"},
-        {"Left_Shoulder", "Left_Elbow"},
-        {"Left_Elbow", "Left_Wrist"},
-        {"Neck", "Right_Hip"},
-        {"Right_Hip", "Right_Knee"},
-        {"Right_Knee", "Right_Ankle"},
-        {"Neck", "Left_Hip"},
-        {"Left_Hip", "Left_Knee"},
-        {"Left_Knee", "Left_Ankle"}
-    };
-	}
-	
-	private JObject LoadTestJson(){
-		JObject json = JObject.Parse(@"{'results':{'humans':[[['Nose',0.42592592592592593,0.13043478260869565],['Neck',0.42592592592592593,0.34782608695652173],['Right_Shoulder',0.2962962962962963,0.34782608695652173],['Right_Elbow',0.16666666666666666,0.5434782608695652],['Left_Shoulder',0.5740740740740741,0.34782608695652173],['Left_Elbow',0.6666666666666666,0.6086956521739131],['Left_Ear',0.5,0.13043478260869565],['Left_Eye',0.4629629629629629,0.08695652173913043],['Right_Eye',0.38888888888888884,0.08695652173913043],['Right_Ear',0.37037037037037035,0.13043478260869565]]]}}");
-		
-		return json;
 	}
 }
