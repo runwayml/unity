@@ -13,7 +13,7 @@ Examples are separated by current available models.
 - [OpenPose](https://github.com/runwayml/examples_unity/tree/master/openpose): This example has Scenes for [receving values](https://github.com/runwayml/examples_unity/tree/master/openpose/receiveOnly/Assets/Scenes) and [receiving values with webcam feed](https://github.com/runwayml/examples_unity/tree/master/openpose/receiveOnly/Assets/Scenes). Two additional Scenes showcase recording and playback of OpenPose data via the Unity plugin [RecordAndPlay](https://github.com/fx-lange/unity-record-and-play).
 
 <p align="center">
-<img src="https://github.com/fx-lange/examples_unity/blob/openpose/refactor/resources/OpenPose.png" width=700  />
+<img src="https://github.com/runwayml/examples_unity/blob/master/resources/OpenPose.png" width=700  />
 </p>
 
 ## Contributing
