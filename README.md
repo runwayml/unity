@@ -1,20 +1,18 @@
 <p align="center">
-  <img src="resources/runway_icon.png" width="95">
-  <img src="resources/unity_icon.png" width="250">
+  <img src="https://runway.nyc3.digitaloceanspaces.com/assets/github/cover_runway_unity_github.jpg">
 </p>
 
 # Runway + Unity
 
-A collection of stand alone examples connecting [Runway](https://runwayml.com/) to [Unity](https://unity3d.com/).
-Examples are separated by current available models.
+A collection of examples and tutorials on how to use [Runway](https://runwayml.com/) with [Unity](https://unity3d.com/).
 
 ## Examples
 
-- [OpenPose](https://github.com/runwayml/examples_unity/tree/master/openpose): This example has Scenes for [receving values](https://github.com/runwayml/examples_unity/tree/master/openpose/receiveOnly/Assets/Scenes) and [receiving values with webcam feed](https://github.com/runwayml/examples_unity/tree/master/openpose/receiveOnly/Assets/Scenes). Two additional Scenes showcase recording and playback of OpenPose data via the Unity plugin [RecordAndPlay](https://github.com/fx-lange/unity-record-and-play).
+### Runway Beta
 
-<p align="center">
-<img src="https://github.com/runwayml/examples_unity/blob/master/resources/OpenPose.png" width=700  />
-</p>
+### Runway Alpha [Not Supported]
+
+- [OpenPose](https://github.com/runwayml/examples_unity/tree/master/openpose): This example has Scenes for [receving values](https://github.com/runwayml/examples_unity/tree/master/openpose/receiveOnly/Assets/Scenes) and [receiving values with webcam feed](https://github.com/runwayml/examples_unity/tree/master/openpose/receiveOnly/Assets/Scenes). Two additional Scenes showcase recording and playback of OpenPose data via the Unity plugin [RecordAndPlay](https://github.com/fx-lange/unity-record-and-play).
 
 ## Contributing
 
